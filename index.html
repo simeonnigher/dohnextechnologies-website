@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dohnex Technologies | Engineering Automation</title>
+  <meta name="description" content="Custom CAD and CAE automation tools across AutoCAD, SOLIDWORKS, CATIA and more, built to your engineering standards.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 18px; }
+    body { background: #F4F8FF; color: #0B1826; font-family: 'Inter', -apple-system, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; line-height: 1.6; font-size: 18px; }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes glowPulse { 0%,100% { opacity: 0.25; transform: scale(1); } 50% { opacity: 0.45; transform: scale(1.08); } }
+
+    /* ── HEADER ── */
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(244,248,255,0.96); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(50,148,251,0.15);
+      transition: box-shadow 0.2s;
+    }
+    .header-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 32px; height: 108px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .header-logo { height: 100px; width: auto; }
+    .main-nav { display: flex; gap: 28px; align-items: center; }
+    .nav-link {
+      font-size: 16px; color: rgba(11,24,38,0.52); font-weight: 500;
+      transition: color 0.18s;
+    }
+    .nav-link:hover { color: #0B1826; }
+    .nav-cta {
+      background: transparent; color: #3294FB; padding: 9px 21px;
+      border-radius: 6px; font-size: 15px; font-weight: 600;
+      border: 1.5px solid #3294FB; transition: all 0.2s;
+    }
+    .nav-cta:hover { background: #3294FB; color: #fff; }
+    .mob-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 8px;
+      align-items: center;
+    }
+    .mob-toggle span { width: 22px; height: 2px; background: #0B1826; display: block; border-radius: 1px; }
+    .mob-menu {
+      display: none; background: #F4F8FF;
+      border-top: 1px solid rgba(50,148,251,0.12);
+      padding: 24px 32px; flex-direction: column; gap: 18px;
+    }
+    .mob-menu.open { display: flex; }
+    .mob-menu .nav-link { font-size: 18px; color: rgba(11,24,38,0.7); }
+    .mob-menu .nav-cta-mob {
+      background: #3294FB; color: #fff; padding: 14px 20px;
+      border-radius: 6px; font-size: 17px; font-weight: 600;
+      text-align: center; display: block;
+    }
+
+    /* ── HERO ── */
+    .hero-cta-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #3294FB; color: #fff; padding: 17px 36px;
+      border-radius: 8px; font-size: 17px; font-weight: 600;
+      transition: all 0.2s; box-shadow: 0 4px 16px rgba(50,148,251,0.3);
+    }
+    .hero-cta-primary:hover { background: #1B7EEA; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(50,148,251,0.38); }
+    .hero-cta-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1.5px solid rgba(11,24,38,0.16); color: #0B1826;
+      padding: 17px 36px; border-radius: 8px; font-size: 17px;
+      font-weight: 500; transition: all 0.2s; background: rgba(255,255,255,0.7);
+    }
+    .hero-cta-secondary:hover { border-color: rgba(50,148,251,0.45); background: rgba(50,148,251,0.05); }
+
+    /* ── INDUSTRY CARDS ── */
+    .ind-card {
+      background: #fff; border: 1px solid rgba(50,148,251,0.12);
+      border-radius: 14px; padding: 30px 26px;
+      transition: all 0.25s; box-shadow: 0 2px 8px rgba(11,24,38,0.04);
+    }
+    .ind-card:hover { border-color: rgba(50,148,251,0.35); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(50,148,251,0.1); }
+    .ind-card.green { border-color: rgba(50,199,84,0.15); }
+    .ind-card.green:hover { border-color: rgba(50,199,84,0.35); box-shadow: 0 8px 24px rgba(50,199,84,0.09); }
+    .ind-card.orange { border-color: rgba(201,123,92,0.15); }
+    .ind-card.orange:hover { border-color: rgba(201,123,92,0.38); box-shadow: 0 8px 24px rgba(201,123,92,0.1); }
+    .ind-icon { width: 48px; height: 48px; background: rgba(50,148,251,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+    .ind-icon.green { background: rgba(50,199,84,0.08); }
+    .ind-icon.orange { background: rgba(201,123,92,0.08); }
+    .industries-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1.5px solid rgba(50,148,251,0.3); color: #3294FB;
+      padding: 13px 24px; border-radius: 7px; font-size: 16px;
+      font-weight: 600; white-space: nowrap; transition: all 0.2s; flex-shrink: 0;
+    }
+    .industries-cta:hover { color: #1B7EEA; border-color: #1B7EEA; }
+
+    /* ── SERVICE PANELS ── */
+    .svc-cta-blue {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #3294FB; color: #fff; padding: 14px 28px;
+      border-radius: 7px; font-size: 16px; font-weight: 600;
+      transition: all 0.2s; align-self: flex-start;
+    }
+    .svc-cta-blue:hover { background: #1B7EEA; transform: translateY(-1px); }
+    .svc-cta-orange {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #C97B5C; color: #fff; padding: 14px 28px;
+      border-radius: 7px; font-size: 16px; font-weight: 600;
+      transition: all 0.2s; align-self: flex-start;
+    }
+    .svc-cta-orange:hover { background: #B5694A; transform: translateY(-1px); }
+
+    /* ── PLATFORM CARDS ── */
+    .plat-card {
+      background: #fff; border: 1px solid rgba(50,148,251,0.11);
+      border-radius: 14px; padding: 28px 16px 22px;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+      transition: all 0.25s; box-shadow: 0 2px 8px rgba(11,24,38,0.04);
+      cursor: default;
+    }
+    .plat-card:hover { border-color: rgba(50,148,251,0.32); transform: translateY(-4px); box-shadow: 0 10px 24px rgba(50,148,251,0.12); }
+    .plat-card.cae { border-color: rgba(201,123,92,0.15); padding: 32px 24px 26px; gap: 16px; }
+    .plat-card.cae:hover { border-color: rgba(201,123,92,0.35); box-shadow: 0 10px 24px rgba(201,123,92,0.12); }
+    .plat-card.prog { border-color: rgba(50,199,84,0.13); }
+    .plat-card.prog:hover { border-color: rgba(50,199,84,0.35); box-shadow: 0 10px 24px rgba(50,199,84,0.1); }
+
+    /* ── WHAT YOU GET CARDS ── */
+    .wyg-card {
+      background: #fff; border: 1px solid rgba(50,148,251,0.12);
+      border-radius: 20px; padding: 44px 40px;
+      display: flex; gap: 26px; align-items: flex-start;
+      transition: all 0.25s; box-shadow: 0 2px 8px rgba(11,24,38,0.04);
+    }
+    .wyg-card:hover { border-color: rgba(50,148,251,0.3); transform: translateY(-3px); box-shadow: 0 10px 32px rgba(50,148,251,0.1); }
+    .wyg-card.orange { border-color: rgba(201,123,92,0.14); }
+    .wyg-card.orange:hover { border-color: rgba(201,123,92,0.35); box-shadow: 0 10px 32px rgba(201,123,92,0.09); }
+    .wyg-card.green { border-color: rgba(50,199,84,0.15); }
+    .wyg-card.green:hover { border-color: rgba(50,199,84,0.38); box-shadow: 0 10px 32px rgba(50,199,84,0.09); }
+
+    /* ── PROCESS CARDS ── */
+    .proc-card {
+      background: #fff; border: 1px solid rgba(50,148,251,0.12);
+      border-radius: 14px; padding: 40px 36px;
+      box-shadow: 0 2px 8px rgba(11,24,38,0.04); transition: all 0.25s;
+    }
+    .proc-card:hover { border-color: rgba(50,148,251,0.3); box-shadow: 0 8px 24px rgba(50,148,251,0.1); }
+    .proc-card.active {
+      border: 1px solid rgba(50,148,251,0.25); border-left: 4px solid #3294FB;
+      box-shadow: 0 4px 20px rgba(50,148,251,0.1); position: relative;
+    }
+    .proc-card.active:hover { box-shadow: 0 8px 32px rgba(50,148,251,0.16); }
+    .proc-card.active::before {
+      content: ''; position: absolute; top: 20px; left: 20px;
+      width: 8px; height: 8px; background: #3294FB; border-radius: 50%;
+    }
+
+    /* ── CTA ── */
+    .cta-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #3294FB; color: #fff; padding: 18px 40px;
+      border-radius: 7px; font-size: 17px; font-weight: 600;
+      margin-bottom: 48px; transition: all 0.2s;
+    }
+    .cta-primary:hover { background: #1B7EEA; transform: translateY(-1px); }
+    .cta-contact-link { display: inline-flex; align-items: center; gap: 8px; color: rgba(11,24,38,0.55); transition: color 0.18s; }
+    .cta-contact-link:hover { color: #0B1826; }
+    .cta-contact-link.email:hover { color: #3294FB; }
+
+    /* ── WHATSAPP ── */
+    .wa-btn {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      width: 56px; height: 56px; background: #25D366; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.45); transition: all 0.2s;
+    }
+    .wa-btn:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.6); }
+
+    /* ── FOOTER ── */
+    .footer-email { font-size: 15px; color: rgba(11,24,38,0.38); transition: color 0.18s; }
+    .footer-email:hover { color: #3294FB; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 920px) {
+      .ind-grid { grid-template-columns: repeat(2, 1fr) !important; }
+      .plat-grid-cad { grid-template-columns: repeat(3, 1fr) !important; }
+      .plat-grid-cae { grid-template-columns: 1fr !important; }
+      .plat-grid-prog { grid-template-columns: repeat(3, 1fr) !important; }
+      .proc-row { grid-template-columns: 1fr 1fr !important; }
+      .pipeline-grid { grid-template-columns: 1fr !important; }
+      .pipe-arrow { display: none !important; }
+      .wyg-grid { grid-template-columns: 1fr !important; }
+      .footer-inner { flex-direction: column !important; align-items: flex-start !important; gap: 16px !important; }
+    }
+    @media (max-width: 700px) {
+      .main-nav { display: none !important; }
+      .mob-toggle { display: flex !important; }
+      .proc-row { grid-template-columns: 1fr !important; }
+      .cta-card { padding: 48px 24px !important; }
+      .hero-stats { grid-template-columns: 1fr 1fr !important; }
+      .plat-grid-cad { grid-template-columns: repeat(2, 1fr) !important; }
+      .plat-grid-prog { grid-template-columns: repeat(2, 1fr) !important; }
+      .svc-grid { grid-template-columns: 1fr !important; }
+      .svc-grid > div { padding: 40px 28px !important; border-right: none !important; }
+      .header-inner { height: 72px !important; padding: 0 16px !important; }
+      .header-logo { height: 58px !important; }
+      .mob-menu { padding: 20px 16px !important; }
+      section:not(#top) { padding-top: 64px !important; padding-bottom: 64px !important; }
+      .wyg-card { flex-direction: column !important; gap: 16px !important; }
+      .proc-card { padding: 28px 20px !important; }
+    }
+    @media (max-width: 500px) {
+      .ind-grid { grid-template-columns: 1fr !important; }
+      section:not(#top) { padding-top: 48px !important; padding-bottom: 48px !important; }
+      .hero-stats > div { padding: 20px 10px !important; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ HEADER ════════ -->
+<header class="site-header" id="site-header">
+  <div class="header-inner">
+    <a href="#top" style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+      <img src="./project/uploads/Logo_Transparent1.PNG" alt="Dohnex Technologies" class="header-logo">
+    </a>
+    <nav class="main-nav">
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#industries" class="nav-link">Industries</a>
+      <a href="#automation-in-action" class="nav-link">Results</a>
+      <a href="#platforms" class="nav-link">Platforms</a>
+      <a href="enquiry.html" class="nav-cta">Get in Touch</a>
+    </nav>
+    <button class="mob-toggle" id="mob-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <nav class="mob-menu" id="mob-menu">
+    <a href="#services" class="nav-link" onclick="closeMenu()">Services</a>
+    <a href="#industries" class="nav-link" onclick="closeMenu()">Industries</a>
+    <a href="#automation-in-action" class="nav-link" onclick="closeMenu()">Results</a>
+    <a href="#platforms" class="nav-link" onclick="closeMenu()">Platforms</a>
+    <a href="enquiry.html" class="nav-cta-mob">Get in Touch</a>
+  </nav>
+</header>
+
+<!-- ════════ HERO ════════ -->
+<section id="top" style="position:relative;background:#F4F8FF;padding:148px 0 96px;overflow:hidden;min-height:100vh;display:flex;align-items:center">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(50,148,251,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(50,148,251,0.045) 1px,transparent 1px);background-size:56px 56px;pointer-events:none"></div>
+  <div style="position:absolute;right:-80px;top:-160px;width:680px;height:680px;background:radial-gradient(circle,rgba(50,148,251,0.13) 0%,transparent 65%);border-radius:50%;pointer-events:none;animation:glowPulse 9s ease-in-out infinite"></div>
+  <div style="position:absolute;left:-100px;bottom:-60px;width:520px;height:520px;background:radial-gradient(circle,rgba(50,199,84,0.07) 0%,transparent 68%);border-radius:50%;pointer-events:none"></div>
+
+  <div style="max-width:1100px;margin:0 auto;padding:0 32px;width:100%;position:relative;z-index:2;text-align:center">
+
+    <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(50,148,251,0.07);border:1px solid rgba(50,148,251,0.2);border-radius:100px;padding:9px 22px;margin-bottom:36px;animation:fadeUp .5s ease forwards;opacity:0;animation-delay:.05s">
+      <span style="width:7px;height:7px;background:#32C754;border-radius:50%;display:inline-block;flex-shrink:0;box-shadow:0 0 0 3px rgba(50,199,84,0.2)"></span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#3294FB;font-weight:500">CAD · CAE · Automation &amp; Customization</span>
+    </div>
+
+    <h1 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(46px,6.5vw,82px);font-weight:700;letter-spacing:-0.03em;line-height:1.02;margin-bottom:28px;animation:fadeUp .65s ease forwards;opacity:0;animation-delay:.18s;color:#0B1826;max-width:920px;margin-left:auto;margin-right:auto">
+      Engineering automation that works the way <span style="color:#3294FB">your team</span> does.
+    </h1>
+
+    <p style="font-size:21px;color:rgba(11,24,38,0.55);max-width:580px;line-height:1.72;margin:0 auto 44px;animation:fadeUp .65s ease forwards;opacity:0;animation-delay:.3s">
+      Custom tools built on your engineering logic, covering drawing generation, model checking and workflow automation, so your team stops repeating work and ships faster.
+    </p>
+
+    <div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp .65s ease forwards;opacity:0;animation-delay:.42s;margin-bottom:72px">
+      <a href="enquiry.html" class="hero-cta-primary">Start an Enquiry →</a>
+      <a href="#automation-in-action" class="hero-cta-secondary">See How It Works</a>
+    </div>
+
+    <div class="hero-stats" data-reveal style="display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:1px solid rgba(50,148,251,0.13);border-radius:18px;overflow:hidden;box-shadow:0 4px 24px rgba(50,148,251,0.08)">
+      <div style="padding:36px 20px;border-right:1px solid rgba(50,148,251,0.1);text-align:center">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:46px;font-weight:700;color:#3294FB;line-height:1;letter-spacing:-0.02em">10+</div>
+        <div style="font-size:15px;color:rgba(11,24,38,0.48);margin-top:8px;letter-spacing:0.02em">Tools Built &amp; Shipped</div>
+      </div>
+      <div style="padding:36px 20px;border-right:1px solid rgba(50,148,251,0.1);text-align:center">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:46px;font-weight:700;color:#1FA84A;line-height:1;letter-spacing:-0.02em">95%</div>
+        <div style="font-size:15px;color:rgba(11,24,38,0.48);margin-top:8px;letter-spacing:0.02em">Engineering Time Saved</div>
+      </div>
+      <div style="padding:36px 20px;border-right:1px solid rgba(50,148,251,0.1);text-align:center">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:46px;font-weight:700;color:#C97B5C;line-height:1;letter-spacing:-0.02em">5+</div>
+        <div style="font-size:15px;color:rgba(11,24,38,0.48);margin-top:8px;letter-spacing:0.02em">Industries Served</div>
+      </div>
+      <div style="padding:36px 20px;text-align:center">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:46px;font-weight:700;color:#3294FB;line-height:1;letter-spacing:-0.02em">8+</div>
+        <div style="font-size:15px;color:rgba(11,24,38,0.48);margin-top:8px;letter-spacing:0.02em">CAD / CAE Platforms</div>
+      </div>
+    </div>
+
+    <div data-reveal style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:32px">
+      <span style="font-size:14px;color:rgba(11,24,38,0.35);letter-spacing:0.06em;text-transform:uppercase;font-family:'JetBrains Mono',monospace;margin-right:4px">Works with</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.18);padding:6px 15px;border-radius:100px">AutoCAD</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.18);padding:6px 15px;border-radius:100px">SOLIDWORKS</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.18);padding:6px 15px;border-radius:100px">CATIA V5/V6</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.18);padding:6px 15px;border-radius:100px">HyperWorks</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.18);padding:6px 15px;border-radius:100px">Siemens NX</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.18);padding:6px 15px;border-radius:100px">PTC Creo</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;background:rgba(11,24,38,0.04);color:rgba(11,24,38,0.4);border:1px solid rgba(11,24,38,0.1);padding:6px 15px;border-radius:100px">+more</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════ INDUSTRIES ════════ -->
+<section id="industries" style="background:#F4F8FF;padding:104px 0">
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px">
+    <div data-reveal style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:52px">
+      <div style="max-width:600px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#3294FB;display:block;margin-bottom:14px">Industries We Serve</span>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,3.6vw,46px);font-weight:700;letter-spacing:-0.02em;line-height:1.12;margin-bottom:14px;color:#0B1826">CAD and CAE automation built for every sector that engineers.</h2>
+        <p style="font-size:18px;color:rgba(11,24,38,0.52);line-height:1.68;max-width:520px">Wherever engineering drawings, simulation models, or process workflows exist, there is repetition to eliminate.</p>
+      </div>
+      <a href="enquiry.html" class="industries-cta">Discuss Your Industry →</a>
+    </div>
+    <div class="ind-grid" data-reveal style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+
+      <div class="ind-card">
+        <div class="ind-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16l-6-2-1-6-2-6-2 6-1 6-6 2 6 2 1 4 2 2 2-2 1-4 6-2z"/></svg>
+        </div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#0B1826;margin-bottom:8px;line-height:1.3">Aerospace &amp; Defence</h3>
+        <p style="font-size:15px;color:rgba(11,24,38,0.48);line-height:1.62">Automated drawing generation and dimension validation to certification grade tolerances.</p>
+      </div>
+
+      <div class="ind-card">
+        <div class="ind-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="9" x2="12" y2="3"/><line x1="8.5" y1="10.5" x2="3.7" y2="7.5"/><line x1="8.5" y1="13.5" x2="3.7" y2="16.5"/></svg>
+        </div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#0B1826;margin-bottom:8px;line-height:1.3">Automotive</h3>
+        <p style="font-size:15px;color:rgba(11,24,38,0.48);line-height:1.62">Multi variant 3D model generation, BOM automation and drawing standard enforcement across platforms.</p>
+      </div>
+
+      <div class="ind-card green">
+        <div class="ind-icon green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1FA84A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="22" x2="12" y2="13"/><circle cx="12" cy="11" r="2"/><path d="M12 9C11 6 9 4 6 3c1 3 3 5 6 6z"/><path d="M12 9C14 7 17 6 20 7c-2 2-5 3-8 2z"/><path d="M13 12C15 14 16 17 15 20c-2-2-3-5-2-8z"/></svg>
+        </div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#0B1826;margin-bottom:8px;line-height:1.3">Energy &amp; Renewables</h3>
+        <p style="font-size:15px;color:rgba(11,24,38,0.48);line-height:1.62">Structural CAD modeling, FEA preprocessing and automated drawing workflows for power generation systems.</p>
+      </div>
+
+      <div class="ind-card">
+        <div class="ind-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 007-7c0-4.5-7-13-7-13S5 10.5 5 15a7 7 0 007 7z"/><path d="M9.5 16.5a3 3 0 004.5-2.5"/></svg>
+        </div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#0B1826;margin-bottom:8px;line-height:1.3">Oil &amp; Gas</h3>
+        <p style="font-size:15px;color:rgba(11,24,38,0.48);line-height:1.62">Automated piping layout drawings, 3D plant model customization and CAD powered documentation workflows.</p>
+      </div>
+
+      <div class="ind-card orange">
+        <div class="ind-icon orange">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C97B5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16M4 20V9l5-7h2l1 7"/><path d="M11 9h9v11"/><path d="M14 9v4M17 9v4"/><line x1="9" y1="20" x2="9" y2="13"/></svg>
+        </div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#0B1826;margin-bottom:8px;line-height:1.3">Heavy Equipment</h3>
+        <p style="font-size:15px;color:rgba(11,24,38,0.48);line-height:1.62">FEA mesh preparation, structural validation automation and assembly drawing generation for large machinery.</p>
+      </div>
+
+      <div class="ind-card">
+        <div class="ind-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><line x1="12" y1="7.5" x2="12" y2="22"/><line x1="5" y1="10" x2="19" y2="10"/><path d="M5 22c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg>
+        </div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#0B1826;margin-bottom:8px;line-height:1.3">Marine &amp; Shipbuilding</h3>
+        <p style="font-size:15px;color:rgba(11,24,38,0.48);line-height:1.62">Hull outfitting drawings, classification society compliance checks and structural CAD automation.</p>
+      </div>
+
+      <div class="ind-card green">
+        <div class="ind-icon green">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1FA84A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="5,12 8,12 10,7 13,17 15,10 17,12 19,12"/></svg>
+        </div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#0B1826;margin-bottom:8px;line-height:1.3">Medical Devices</h3>
+        <p style="font-size:15px;color:rgba(11,24,38,0.48);line-height:1.62">Precision component drawings, revision controlled documentation and compliance ready CAD output.</p>
+      </div>
+
+      <div class="ind-card orange">
+        <div class="ind-icon orange">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C97B5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="16" rx="3"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="10" y1="2" x2="10" y2="9"/><line x1="14" y1="2" x2="14" y2="9"/><circle cx="9" cy="13.5" r="1.2"/><circle cx="15" cy="13.5" r="1.2"/><path d="M7.5 18l-2 4M16.5 18l2 4M8.5 22h7"/></svg>
+        </div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#0B1826;margin-bottom:8px;line-height:1.3">Rail &amp; Transportation</h3>
+        <p style="font-size:15px;color:rgba(11,24,38,0.48);line-height:1.62">Vehicle structure CAD customization, bogie drawing automation and systems integration documentation.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ SERVICES ════════ -->
+<section id="services" style="background:#EBF3FF;padding:104px 0">
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px">
+    <div data-reveal style="text-align:center;max-width:680px;margin:0 auto 64px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#3294FB;display:block;margin-bottom:14px">What We Build</span>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,3.6vw,46px);font-weight:700;letter-spacing:-0.02em;line-height:1.12;margin-bottom:14px;color:#0B1826">Two focused services. One goal: less manual work.</h2>
+      <p style="font-size:18px;color:rgba(11,24,38,0.52);line-height:1.68">We automate what your team keeps repeating, and customize the CAD and CAE tools your engineers already use.</p>
+    </div>
+    <div class="svc-grid" data-reveal style="display:grid;grid-template-columns:1fr 1fr;border-radius:22px;overflow:hidden;box-shadow:0 8px 48px rgba(50,148,251,0.11)">
+
+      <!-- Panel 01 -->
+      <div style="background:#fff;padding:60px 54px;position:relative;overflow:hidden;border-right:1px solid rgba(50,148,251,0.1);display:flex;flex-direction:column">
+        <div style="position:absolute;right:20px;bottom:10px;font-family:'Space Grotesk',sans-serif;font-size:160px;font-weight:800;color:rgba(50,148,251,0.055);line-height:1;pointer-events:none;user-select:none;letter-spacing:-0.04em">01</div>
+        <div style="width:52px;height:5px;background:linear-gradient(90deg,#3294FB,#7FC3FF);border-radius:3px;margin-bottom:30px"></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#3294FB;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:20px">CAD · CAE Automation</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,2.6vw,34px);font-weight:700;color:#0B1826;letter-spacing:-0.02em;line-height:1.1;margin-bottom:18px">Make your tools<br>do the repetitive work.</h3>
+        <p style="font-size:17px;color:rgba(11,24,38,0.52);line-height:1.75;margin-bottom:36px;max-width:380px">We encode your engineering workflow into automation scripts, so drawing generation, model checks and batch tasks run themselves on every project.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:42px">
+          <span style="font-size:14px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.2);padding:7px 16px;border-radius:100px">Drawing Generation</span>
+          <span style="font-size:14px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.2);padding:7px 16px;border-radius:100px">Dimension Validation</span>
+          <span style="font-size:14px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.2);padding:7px 16px;border-radius:100px">Model Creation</span>
+          <span style="font-size:14px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.2);padding:7px 16px;border-radius:100px">Batch Processing</span>
+          <span style="font-size:14px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.2);padding:7px 16px;border-radius:100px">Validation Scripts</span>
+          <span style="font-size:14px;background:rgba(50,148,251,0.07);color:#3294FB;border:1px solid rgba(50,148,251,0.2);padding:7px 16px;border-radius:100px">Automated Reports</span>
+        </div>
+        <a href="enquiry.html" class="svc-cta-blue" style="position:relative;z-index:1;margin-top:auto">Automate My Workflow →</a>
+      </div>
+
+      <!-- Panel 02 -->
+      <div style="background:#FEF9F6;padding:60px 54px;position:relative;overflow:hidden;display:flex;flex-direction:column">
+        <div style="position:absolute;right:20px;bottom:10px;font-family:'Space Grotesk',sans-serif;font-size:160px;font-weight:800;color:rgba(201,123,92,0.06);line-height:1;pointer-events:none;user-select:none;letter-spacing:-0.04em">02</div>
+        <div style="width:52px;height:5px;background:linear-gradient(90deg,#C97B5C,#E8A07A);border-radius:3px;margin-bottom:30px"></div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#C97B5C;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:20px">CAD · CAE Customization</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(24px,2.6vw,34px);font-weight:700;color:#0B1826;letter-spacing:-0.02em;line-height:1.1;margin-bottom:18px">Shape your tools<br>to your engineering standards.</h3>
+        <p style="font-size:17px;color:rgba(11,24,38,0.52);line-height:1.75;margin-bottom:36px;max-width:380px">We tailor CAD and CAE platforms to your exact process, adding custom commands, interfaces and checks your engineers need built directly into the tools they already use.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:42px">
+          <span style="font-size:14px;background:rgba(201,123,92,0.07);color:#C97B5C;border:1px solid rgba(201,123,92,0.22);padding:7px 16px;border-radius:100px">Workflow Customization</span>
+          <span style="font-size:14px;background:rgba(201,123,92,0.07);color:#C97B5C;border:1px solid rgba(201,123,92,0.22);padding:7px 16px;border-radius:100px">Custom Commands</span>
+          <span style="font-size:14px;background:rgba(201,123,92,0.07);color:#C97B5C;border:1px solid rgba(201,123,92,0.22);padding:7px 16px;border-radius:100px">Interface Enhancement</span>
+          <span style="font-size:14px;background:rgba(201,123,92,0.07);color:#C97B5C;border:1px solid rgba(201,123,92,0.22);padding:7px 16px;border-radius:100px">Standards Compliance</span>
+          <span style="font-size:14px;background:rgba(201,123,92,0.07);color:#C97B5C;border:1px solid rgba(201,123,92,0.22);padding:7px 16px;border-radius:100px">Quality Checks</span>
+          <span style="font-size:14px;background:rgba(201,123,92,0.07);color:#C97B5C;border:1px solid rgba(201,123,92,0.22);padding:7px 16px;border-radius:100px">Productivity Tools</span>
+        </div>
+        <a href="enquiry.html" class="svc-cta-orange" style="position:relative;z-index:1;margin-top:auto">Customize My Platform →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ AUTOMATION IN ACTION ════════ -->
+<section id="automation-in-action" style="background:#EBF3FF;padding:104px 0;position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(50,148,251,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(50,148,251,0.06) 1px,transparent 1px);background-size:56px 56px;pointer-events:none"></div>
+  <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:900px;height:600px;background:radial-gradient(ellipse,rgba(50,148,251,0.07) 0%,transparent 60%);pointer-events:none"></div>
+
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px;position:relative;z-index:2">
+
+    <div data-reveal style="text-align:center;margin-bottom:72px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#3294FB">Automation in Action</span>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4vw,56px);font-weight:700;color:#0B1826;margin-top:16px;letter-spacing:-0.025em;line-height:1.06;margin-bottom:18px">Manual work in.<br><span style="color:#3294FB">Instant results out.</span></h2>
+      <p style="font-size:20px;color:rgba(11,24,38,0.52);max-width:560px;margin:0 auto;line-height:1.7">One script embedded in your CAD platform permanently eliminates an entire category of repetitive engineering work, on every project, every time.</p>
+    </div>
+
+    <div class="pipeline-grid" data-reveal style="display:grid;grid-template-columns:1fr 48px 1fr 48px 1fr;align-items:center">
+
+      <div style="background:#fff;border:1px solid rgba(50,148,251,0.15);border-radius:18px;padding:40px 34px;box-shadow:0 2px 14px rgba(50,148,251,0.07)">
+        <div style="width:54px;height:54px;background:rgba(50,148,251,0.08);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;border:1px solid rgba(50,148,251,0.15)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#3294FB;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px">Input</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;color:#0B1826;margin-bottom:12px;line-height:1.25">Your Engineering Files</h3>
+        <p style="font-size:16px;color:rgba(11,24,38,0.5);line-height:1.68">Drawings, 3D models, measurement inputs or specification sheets, whatever your process starts with.</p>
+      </div>
+
+      <div class="pipe-arrow" style="display:flex;align-items:center;justify-content:center">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(50,148,251,0.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+
+      <div style="background:#fff;border:1.5px solid rgba(50,148,251,0.35);border-radius:18px;padding:40px 34px;position:relative;box-shadow:0 4px 32px rgba(50,148,251,0.14)">
+        <div style="position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:#3294FB;color:#fff;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:5px 16px;border-radius:0 0 10px 10px;white-space:nowrap">Dohnex</div>
+        <div style="width:54px;height:54px;background:rgba(50,148,251,0.1);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;border:1px solid rgba(50,148,251,0.22);margin-top:16px">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#3294FB;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px">Automation Script</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;color:#0B1826;margin-bottom:12px;line-height:1.25">Built for Your Workflow</h3>
+        <p style="font-size:16px;color:rgba(11,24,38,0.5);line-height:1.68">A custom script built specifically for your process, embedded directly inside your existing CAD or CAE platform. Runs natively with no external apps and no configuration required.</p>
+      </div>
+
+      <div class="pipe-arrow" style="display:flex;align-items:center;justify-content:center">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(50,148,251,0.45)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+
+      <div style="background:#fff;border:1px solid rgba(50,199,84,0.22);border-radius:18px;padding:40px 34px;box-shadow:0 2px 14px rgba(50,199,84,0.07)">
+        <div style="width:54px;height:54px;background:rgba(50,199,84,0.08);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;border:1px solid rgba(50,199,84,0.2)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#32C754" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#32C754;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px">Output</div>
+        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;color:#0B1826;margin-bottom:12px;line-height:1.25">Production Ready Results</h3>
+        <p style="font-size:16px;color:rgba(11,24,38,0.5);line-height:1.68">Validated drawings, reports and models built to your exact standards. Zero manual checking. Zero rework.</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════ WHAT YOU GET ════════ -->
+<section style="background:#F4F8FF;padding:104px 0">
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px">
+    <div data-reveal style="text-align:center;max-width:680px;margin:0 auto 64px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#3294FB;display:block;margin-bottom:14px">What You Get</span>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,3.6vw,46px);font-weight:700;letter-spacing:-0.02em;line-height:1.12;margin-bottom:16px;color:#0B1826">Built complete. Delivered complete.</h2>
+      <p style="font-size:19px;color:rgba(11,24,38,0.52);line-height:1.7">Every engagement comes with everything you need. Not just the tool, but the confidence to run it independently, forever.</p>
+    </div>
+    <div class="wyg-grid" data-reveal style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px">
+
+      <div class="wyg-card">
+        <div style="width:60px;height:60px;background:rgba(50,148,251,0.07);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(50,148,251,0.14)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:600;color:#0B1826;margin-bottom:11px;line-height:1.25">Full source code, yours to keep</h3>
+          <p style="font-size:17px;color:rgba(11,24,38,0.52);line-height:1.68;margin-bottom:18px">No black box. No license dependency. You receive the complete, documented source code and own it outright. Modify, extend, or hand it to your internal team whenever you need.</p>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#3294FB;background:rgba(50,148,251,0.07);border:1px solid rgba(50,148,251,0.15);padding:6px 14px;border-radius:100px">No hidden dependencies</span>
+        </div>
+      </div>
+
+      <div class="wyg-card orange">
+        <div style="width:60px;height:60px;background:rgba(201,123,92,0.07);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(201,123,92,0.14)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C97B5C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+        </div>
+        <div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:600;color:#0B1826;margin-bottom:11px;line-height:1.25">Built on your actual project data</h3>
+          <p style="font-size:17px;color:rgba(11,24,38,0.52);line-height:1.68;margin-bottom:18px">We do not build against generic samples. Every tool is developed and validated using real drawings and models from your project, so it works exactly right from day one.</p>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#C97B5C;background:rgba(201,123,92,0.07);border:1px solid rgba(201,123,92,0.2);padding:6px 14px;border-radius:100px">Validated on your files</span>
+        </div>
+      </div>
+
+      <div class="wyg-card green">
+        <div style="width:60px;height:60px;background:rgba(50,199,84,0.07);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(50,199,84,0.15)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1FA84A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:600;color:#0B1826;margin-bottom:11px;line-height:1.25">Native inside your existing tools</h3>
+          <p style="font-size:17px;color:rgba(11,24,38,0.52);line-height:1.68;margin-bottom:18px">Your team does not switch to a different app. Automation lives as a command or panel inside AutoCAD, SOLIDWORKS or CATIA, wherever your engineers already work, every day.</p>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#1FA84A;background:rgba(50,199,84,0.07);border:1px solid rgba(50,199,84,0.2);padding:6px 14px;border-radius:100px">Zero workflow disruption</span>
+        </div>
+      </div>
+
+      <div class="wyg-card">
+        <div style="width:60px;height:60px;background:rgba(50,148,251,0.07);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(50,148,251,0.14)">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div>
+          <h3 style="font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:600;color:#0B1826;margin-bottom:11px;line-height:1.25">We stay involved after delivery</h3>
+          <p style="font-size:17px;color:rgba(11,24,38,0.52);line-height:1.68;margin-bottom:18px">Delivery is not the end. We support you through the first real world revisions, answer questions from your team, and make adjustments when your engineering process changes.</p>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#3294FB;background:rgba(50,148,251,0.07);border:1px solid rgba(50,148,251,0.15);padding:6px 14px;border-radius:100px">Supported through revisions</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ PLATFORMS ════════ -->
+<section id="platforms" style="background:#EBF3FF;padding:104px 0">
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px">
+
+    <div data-reveal style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:24px;margin-bottom:64px">
+      <div style="max-width:600px">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#3294FB;display:block;margin-bottom:14px">Software Platforms</span>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,3.6vw,46px);font-weight:700;letter-spacing:-0.02em;line-height:1.12;margin-bottom:14px;color:#0B1826">Built on the tools your engineering team already uses.</h2>
+        <p style="font-size:18px;color:rgba(11,24,38,0.52);line-height:1.68">Deep automation expertise across major CAD and CAE platforms and the languages that power them.</p>
+      </div>
+    </div>
+
+    <!-- CAD Software -->
+    <div data-reveal style="background:#fff;border:1px solid rgba(50,148,251,0.13);border-radius:20px;padding:40px;margin-bottom:20px;box-shadow:0 2px 12px rgba(50,148,251,0.06)">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px">
+        <div style="width:36px;height:36px;background:#3294FB;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+        </div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#0B1826">CAD Software</div>
+          <div style="font-size:13px;color:rgba(11,24,38,0.45);margin-top:2px">Computer-Aided Design platforms</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">AC</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">Autodesk AutoCAD</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">IN</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">Autodesk Inventor</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">CA</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">CATIA V5 / V6</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">SW</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">SOLIDWORKS</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">NX</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">Siemens NX</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">CR</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">PTC Creo</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">SE</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">Siemens Solid Edge</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">ZW</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">ZWCAD</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">BC</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">BricsCAD</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F4F8FF;border:1px solid rgba(50,148,251,0.14);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,148,251,0.4)';this.style.background='#EBF3FF'" onmouseout="this.style.borderColor='rgba(50,148,251,0.14)';this.style.background='#F4F8FF'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#3294FB,#1B7EEA);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">OS</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">OpenSCAD</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAE Software -->
+    <div data-reveal style="background:#fff;border:1px solid rgba(201,123,92,0.15);border-radius:20px;padding:40px;margin-bottom:20px;box-shadow:0 2px 12px rgba(201,123,92,0.05)">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px">
+        <div style="width:36px;height:36px;background:#C97B5C;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20M12 2a10 10 0 010 20M12 2C8 6 6 9 6 12s2 6 6 10M12 2c4 4 6 7 6 10s-2 6-6 10"/></svg>
+        </div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#0B1826">CAE Software</div>
+          <div style="font-size:13px;color:rgba(11,24,38,0.45);margin-top:2px">Computer-Aided Engineering platforms</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px;background:#FEF9F6;border:1px solid rgba(201,123,92,0.18);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(201,123,92,0.45)';this.style.background='#FDF0E8'" onmouseout="this.style.borderColor='rgba(201,123,92,0.18)';this.style.background='#FEF9F6'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#C97B5C,#B5694A);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">HW</span></div>
+          <div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">Altair HyperWorks</div>
+            <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#C97B5C;background:rgba(201,123,92,0.08);border:1px solid rgba(201,123,92,0.2);padding:2px 8px;border-radius:100px">HyperMesh</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#C97B5C;background:rgba(201,123,92,0.08);border:1px solid rgba(201,123,92,0.2);padding:2px 8px;border-radius:100px">HyperView</span>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#C97B5C;background:rgba(201,123,92,0.08);border:1px solid rgba(201,123,92,0.2);padding:2px 8px;border-radius:100px">HyperGraph</span>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#FEF9F6;border:1px solid rgba(201,123,92,0.18);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(201,123,92,0.45)';this.style.background='#FDF0E8'" onmouseout="this.style.borderColor='rgba(201,123,92,0.18)';this.style.background='#FEF9F6'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#C97B5C,#B5694A);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">BA</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">BETA ANSA</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#FEF9F6;border:1px solid rgba(201,123,92,0.18);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(201,123,92,0.45)';this.style.background='#FDF0E8'" onmouseout="this.style.borderColor='rgba(201,123,92,0.18)';this.style.background='#FEF9F6'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#C97B5C,#B5694A);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#fff">MP</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">MetaPost</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Programming Technologies -->
+    <div data-reveal style="background:#fff;border:1px solid rgba(50,199,84,0.15);border-radius:20px;padding:40px;box-shadow:0 2px 12px rgba(50,199,84,0.05)">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:28px">
+        <div style="width:36px;height:36px;background:#1FA84A;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:#0B1826">Programming Technologies</div>
+          <div style="font-size:13px;color:rgba(11,24,38,0.45);margin-top:2px">Languages powering automation scripts</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;gap:10px;background:#F2FBF5;border:1px solid rgba(50,199,84,0.18);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,199,84,0.45)';this.style.background='#E4F7EB'" onmouseout="this.style.borderColor='rgba(50,199,84,0.18)';this.style.background='#F2FBF5'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#1FA84A,#178B3C);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:#fff">VB</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">VB.NET</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F2FBF5;border:1px solid rgba(50,199,84,0.18);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,199,84,0.45)';this.style.background='#E4F7EB'" onmouseout="this.style.borderColor='rgba(50,199,84,0.18)';this.style.background='#F2FBF5'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#1FA84A,#178B3C);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:#fff">C#</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">C#</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F2FBF5;border:1px solid rgba(50,199,84,0.18);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,199,84,0.45)';this.style.background='#E4F7EB'" onmouseout="this.style.borderColor='rgba(50,199,84,0.18)';this.style.background='#F2FBF5'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#1FA84A,#178B3C);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#fff">C++</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">MSVC++</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F2FBF5;border:1px solid rgba(50,199,84,0.18);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,199,84,0.45)';this.style.background='#E4F7EB'" onmouseout="this.style.borderColor='rgba(50,199,84,0.18)';this.style.background='#F2FBF5'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#1FA84A,#178B3C);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:#fff">PY</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">Python</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;background:#F2FBF5;border:1px solid rgba(50,199,84,0.18);border-radius:12px;padding:12px 18px;transition:all .2s;cursor:default" onmouseover="this.style.borderColor='rgba(50,199,84,0.45)';this.style.background='#E4F7EB'" onmouseout="this.style.borderColor='rgba(50,199,84,0.18)';this.style.background='#F2FBF5'">
+          <div style="width:32px;height:32px;background:linear-gradient(135deg,#1FA84A,#178B3C);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:#fff">TCL</span></div>
+          <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#0B1826;white-space:nowrap">Tcl / Tk</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════ PROCESS ════════ -->
+<section style="background:#F4F8FF;padding:104px 0">
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px">
+
+    <div data-reveal style="text-align:center;margin-bottom:64px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#3294FB;display:block;margin-bottom:14px">How We Work</span>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,3.6vw,46px);font-weight:700;letter-spacing:-0.02em;line-height:1.12;color:#0B1826;margin-bottom:16px">Our <span style="color:#3294FB">Engineering Automation</span> Process</h2>
+      <p style="font-size:18px;color:rgba(11,24,38,0.48);max-width:560px;margin:0 auto;line-height:1.68">A short, focused engagement that takes you from first conversation to a running automation tool.</p>
+    </div>
+
+    <div class="proc-row" data-reveal style="display:grid;grid-template-columns:repeat(2,1fr);gap:20px">
+
+      <div class="proc-card active">
+        <div style="display:flex;justify-content:center;margin-bottom:20px">
+          <div style="width:52px;height:52px;border-radius:50%;border:2px solid #3294FB;display:flex;align-items:center;justify-content:center;background:rgba(50,148,251,0.06)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <h4 style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:#0B1826;text-align:center;margin-bottom:12px">1. Requirement Analysis</h4>
+        <p style="font-size:16px;color:rgba(11,24,38,0.52);line-height:1.68;text-align:center">We assess your current workflows, engineering challenges and project requirements to define exactly what needs to be automated.</p>
+      </div>
+
+      <div class="proc-card">
+        <div style="display:flex;justify-content:center;margin-bottom:20px">
+          <div style="width:52px;height:52px;border-radius:50%;border:2px solid rgba(50,148,251,0.35);display:flex;align-items:center;justify-content:center;background:rgba(50,148,251,0.04)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <h4 style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:#0B1826;text-align:center;margin-bottom:12px">2. Workflow Mapping</h4>
+        <p style="font-size:16px;color:rgba(11,24,38,0.52);line-height:1.68;text-align:center">Our engineers identify every manual step, repetitive task and bottleneck inside your existing CAD or CAE platform.</p>
+      </div>
+
+      <div class="proc-card">
+        <div style="display:flex;justify-content:center;margin-bottom:20px">
+          <div style="width:52px;height:52px;border-radius:50%;border:2px solid rgba(50,148,251,0.35);display:flex;align-items:center;justify-content:center;background:rgba(50,148,251,0.04)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <h4 style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:#0B1826;text-align:center;margin-bottom:12px">3. Custom Development</h4>
+        <p style="font-size:16px;color:rgba(11,24,38,0.52);line-height:1.68;text-align:center">We build tailored scripts and automation tools natively inside your platform, tested against real drawings and models from your project.</p>
+      </div>
+
+      <div class="proc-card">
+        <div style="display:flex;justify-content:center;margin-bottom:20px">
+          <div style="width:52px;height:52px;border-radius:50%;border:2px solid rgba(50,148,251,0.35);display:flex;align-items:center;justify-content:center;background:rgba(50,148,251,0.04)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <h4 style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:#0B1826;text-align:center;margin-bottom:12px">4. Testing and Validation</h4>
+        <p style="font-size:16px;color:rgba(11,24,38,0.52);line-height:1.68;text-align:center">Every solution is validated against your engineering standards and checked for accuracy before anything is handed over to your team.</p>
+      </div>
+
+      <div class="proc-card">
+        <div style="display:flex;justify-content:center;margin-bottom:20px">
+          <div style="width:52px;height:52px;border-radius:50%;border:2px solid rgba(50,148,251,0.35);display:flex;align-items:center;justify-content:center;background:rgba(50,148,251,0.04)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <h4 style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:#0B1826;text-align:center;margin-bottom:12px">5. Implementation</h4>
+        <p style="font-size:16px;color:rgba(11,24,38,0.52);line-height:1.68;text-align:center">We deploy the automation directly into your working environment and walk your team through every feature so adoption is seamless from day one.</p>
+      </div>
+
+      <div class="proc-card">
+        <div style="display:flex;justify-content:center;margin-bottom:20px">
+          <div style="width:52px;height:52px;border-radius:50%;border:2px solid rgba(50,148,251,0.35);display:flex;align-items:center;justify-content:center;background:rgba(50,148,251,0.04)">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3294FB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+        </div>
+        <h4 style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:#0B1826;text-align:center;margin-bottom:12px">6. Ongoing Support</h4>
+        <p style="font-size:16px;color:rgba(11,24,38,0.52);line-height:1.68;text-align:center">We provide continued support, updates and enhancements as your engineering processes grow and evolve over time.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════════ CONTACT CTA ════════ -->
+<section id="contact" style="background:#EBF3FF;padding:104px 0">
+  <div style="max-width:1200px;margin:0 auto;padding:0 32px">
+    <div class="cta-card" data-reveal style="background:linear-gradient(135deg,#FFFFFF 0%,#E4EFFD 100%);border:1px solid rgba(50,148,251,0.22);border-radius:20px;padding:88px 68px;text-align:center;position:relative;overflow:hidden;box-shadow:0 4px 32px rgba(50,148,251,0.1)">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(50,148,251,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(50,148,251,0.045) 1px,transparent 1px);background-size:48px 48px;pointer-events:none"></div>
+      <div style="position:absolute;top:-120px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(50,148,251,0.1) 0%,transparent 70%);border-radius:50%;pointer-events:none"></div>
+      <div style="position:relative;z-index:1">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.14em;text-transform:uppercase;color:#3294FB;display:block;margin-bottom:20px">Start a Project</span>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(32px,4vw,54px);font-weight:700;letter-spacing:-0.025em;color:#0B1826;margin-bottom:20px;line-height:1.06">Have a workflow that should run itself?</h2>
+        <p style="font-size:20px;color:rgba(11,24,38,0.55);max-width:500px;margin:0 auto 42px;line-height:1.72">Tell us about the manual process. Share a drawing, a workflow description, or just the problem statement. We will tell you honestly whether automation is the right answer.</p>
+        <a href="enquiry.html" class="cta-primary">Start an Enquiry →</a>
+        <div style="border-top:1px solid rgba(50,148,251,0.15);padding-top:32px;display:flex;justify-content:center;gap:36px;flex-wrap:wrap;font-size:16px">
+          <a href="tel:+919443086756" class="cta-contact-link">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.01 1.18C0 .06.98-.03 2-.02h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8a16 16 0 006.91 6.91l1.28-1.16a2 2 0 012.11-.45c.907.339 1.85.574 2.81.7A2 2 0 0122 16.92z"/></svg>
+            +91 94430 86756
+          </a>
+          <a href="mailto:contact@dohnextech.com" class="cta-contact-link email">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            contact@dohnextech.com
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ FLOATING WHATSAPP ════════ -->
+<a href="#" id="wa-btn" class="wa-btn" rel="noopener" title="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 32 32" fill="#fff"><path d="M16 3C9.373 3 4 8.373 4 15c0 2.385.663 4.61 1.813 6.51L4 29l7.697-1.787A12.94 12.94 0 0016 28c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 2c5.523 0 10 4.477 10 10s-4.477 10-10 10a9.95 9.95 0 01-5.021-1.356l-.36-.214-4.57 1.06 1.094-4.46-.23-.373A9.956 9.956 0 016 15c0-5.523 4.477-10 10-10zm-3.293 5.5c-.22 0-.576.082-.877.408-.302.326-1.152 1.125-1.152 2.744 0 1.62 1.178 3.185 1.342 3.408.163.222 2.31 3.726 5.684 5.08 2.809 1.107 3.376.888 3.984.832.61-.056 1.965-.804 2.243-1.58.277-.776.277-1.44.194-1.58-.083-.138-.305-.22-.637-.386-.332-.165-1.965-.97-2.269-1.08-.305-.11-.526-.166-.748.165-.22.332-.857 1.08-1.05 1.302-.194.22-.387.248-.72.082-.332-.165-1.4-.516-2.666-1.644-.985-.878-1.65-1.962-1.843-2.294-.194-.332-.02-.511.145-.677.149-.149.332-.387.498-.58.165-.193.22-.332.332-.554.11-.22.055-.415-.028-.58-.083-.166-.74-1.79-1.02-2.45-.265-.636-.54-.546-.748-.556-.193-.01-.415-.012-.637-.012z"/></svg>
+</a>
+
+<!-- ════════ FOOTER ════════ -->
+<footer style="background:#E4EEF9;padding:36px 0;border-top:1px solid rgba(50,148,251,0.15)">
+  <div class="footer-inner" style="max-width:1200px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+    <a href="#top" style="display:flex;align-items:center;gap:10px">
+      <img src="./project/uploads/Logo_Transparent1.PNG" alt="Dohnex Technologies" style="height:80px;width:auto;opacity:0.92">
+    </a>
+    <span style="font-size:15px;color:rgba(11,24,38,0.35)">© 2026 Dohnex Technologies. Engineering the Next.</span>
+    <a href="mailto:contact@dohnextech.com" class="footer-email">contact@dohnextech.com</a>
+  </div>
+</footer>
+
+<script>
+  // ── Mobile menu ──
+  var menuOpen = false;
+  document.getElementById('mob-toggle').addEventListener('click', function() {
+    menuOpen = !menuOpen;
+    document.getElementById('mob-menu').classList.toggle('open', menuOpen);
+  });
+  function closeMenu() {
+    menuOpen = false;
+    document.getElementById('mob-menu').classList.remove('open');
+  }
+
+  // ── Sticky header shadow ──
+  var header = document.getElementById('site-header');
+  window.addEventListener('scroll', function() {
+    header.style.boxShadow = window.scrollY > 10 ? '0 4px 24px rgba(50,148,251,0.1)' : 'none';
+  }, { passive: true });
+
+  // ── Scroll reveal ──
+  if ('IntersectionObserver' in window) {
+    var els = document.querySelectorAll('[data-reveal]');
+    var viewH = window.innerHeight;
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.07, rootMargin: '0px 0px -5% 0px' });
+
+    els.forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < viewH * 1.05) {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      } else {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(26px)';
+        el.style.transition = 'opacity 0.75s ease, transform 0.75s ease';
+        observer.observe(el);
+      }
+    });
+  }
+
+  // ── WhatsApp button ──
+  document.getElementById('wa-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    var ph = '919443086756';
+    var tx = encodeURIComponent('Hi, I would like to enquire about your CAD/CAE automation services.');
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      window.open('https://wa.me/' + ph + '?text=' + tx, '_blank');
+    } else {
+      window.location.href = 'whatsapp://send?phone=' + ph + '&text=' + tx;
+      var t = setTimeout(function() {
+        window.open('https://web.whatsapp.com/send/?phone=' + ph + '&text=' + tx, '_blank');
+      }, 2000);
+      window.addEventListener('blur', function() { clearTimeout(t); }, { once: true });
+    }
+  });
+</script>
+
+</body>
+</html>
